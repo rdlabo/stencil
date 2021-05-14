@@ -22,7 +22,11 @@ export const insertVdomAnnotations = (doc: Document, staticComponents: string[])
         let childId = `${hostId}.${nodeId}`;
 
         if (hostId == null) {
-          hostId = 0;
+          hostId = nodeRef.nodeType === NODE_TYPE.ElementNode && 
+                        nodeRef.hasAttribute('s-id') 
+                        && !isNaN(parseInt(nodeRef.getAttribute('s-id'))) ? 
+                         parseInt(nodeRef.getAttribute('s-id')) - 1 : 0;
+          
           docData.rootLevelIds++;
           nodeId = docData.rootLevelIds;
           childId = `${hostId}.${nodeId}`;
